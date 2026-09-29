@@ -1,0 +1,1317 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0">
+
+<title>CodeBot - Generador de Código</title>
+
+<style>
+
+/* =========================
+   GENERAL
+========================= */
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial,sans-serif;
+}
+
+body{
+    background:#f4f6fa;
+    min-height:100vh;
+}
+
+
+/* =========================
+   CONTENEDOR
+========================= */
+
+.container{
+    width:100%;
+    max-width:1000px;
+    margin:auto;
+    padding:30px 20px;
+}
+
+
+/* =========================
+   ENCABEZADO
+========================= */
+
+.header{
+    background:#111827;
+    color:white;
+    padding:25px;
+    border-radius:15px 15px 0 0;
+}
+
+.header h1{
+    font-size:25px;
+}
+
+.header p{
+    margin-top:7px;
+    color:#cbd5e1;
+    font-size:14px;
+}
+
+
+/* =========================
+   CHAT
+========================= */
+
+.chat{
+    background:white;
+    min-height:500px;
+    padding:20px;
+
+    display:flex;
+    flex-direction:column;
+
+    gap:15px;
+
+    border-left:1px solid #ddd;
+    border-right:1px solid #ddd;
+}
+
+
+/* =========================
+   MENSAJES
+========================= */
+
+.message{
+    max-width:90%;
+    padding:14px;
+
+    border-radius:12px;
+
+    font-size:14px;
+
+    line-height:1.5;
+}
+
+.user{
+    align-self:flex-end;
+
+    background:#2563eb;
+
+    color:white;
+}
+
+.bot{
+    align-self:flex-start;
+
+    background:#f1f5f9;
+
+    color:#111827;
+}
+
+
+/* =========================
+   CÓDIGO
+========================= */
+
+.code-title{
+    font-weight:bold;
+
+    margin-bottom:8px;
+}
+
+.code-container{
+    background:#0f172a;
+
+    color:#e5e7eb;
+
+    border-radius:10px;
+
+    overflow:hidden;
+
+    margin-top:10px;
+}
+
+.code-header{
+    background:#1e293b;
+
+    padding:8px 12px;
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    font-size:12px;
+}
+
+.copy-button{
+    background:#2563eb;
+
+    border:none;
+
+    color:white;
+
+    padding:5px 9px;
+
+    border-radius:5px;
+
+    cursor:pointer;
+
+    font-size:11px;
+}
+
+.copy-button:hover{
+    background:#1d4ed8;
+}
+
+pre{
+    padding:15px;
+
+    overflow-x:auto;
+
+    font-family:
+        Consolas,
+        Monaco,
+        monospace;
+
+    font-size:13px;
+
+    line-height:1.5;
+
+    white-space:pre;
+}
+
+
+/* =========================
+   INPUT
+========================= */
+
+.input-area{
+    background:white;
+
+    padding:15px;
+
+    display:flex;
+
+    gap:10px;
+
+    border:1px solid #ddd;
+
+    border-radius:0 0 15px 15px;
+}
+
+.input{
+    flex:1;
+
+    border:1px solid #d1d5db;
+
+    border-radius:8px;
+
+    padding:12px;
+
+    font-size:14px;
+
+    outline:none;
+}
+
+.input:focus{
+    border-color:#2563eb;
+}
+
+.send{
+    background:#2563eb;
+
+    color:white;
+
+    border:none;
+
+    padding:0 20px;
+
+    border-radius:8px;
+
+    cursor:pointer;
+
+    font-size:14px;
+}
+
+.send:hover{
+    background:#1d4ed8;
+}
+
+
+/* =========================
+   EJEMPLOS
+========================= */
+
+.examples{
+    display:flex;
+
+    flex-wrap:wrap;
+
+    gap:8px;
+
+    margin-top:15px;
+}
+
+.examples button{
+    border:1px solid #d1d5db;
+
+    background:white;
+
+    padding:8px 12px;
+
+    border-radius:20px;
+
+    cursor:pointer;
+
+    font-size:12px;
+}
+
+.examples button:hover{
+    background:#e8f0ff;
+}
+
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media(max-width:600px){
+
+    .container{
+        padding:10px;
+    }
+
+    .header h1{
+        font-size:20px;
+    }
+
+    .chat{
+        min-height:450px;
+    }
+
+    .send{
+        padding:0 14px;
+    }
+
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<div class="container">
+
+
+    <!-- HEADER -->
+
+    <div class="header">
+
+        <h1>💻 CodeBot</h1>
+
+        <p>
+            Generador de código HTML, CSS y JavaScript
+        </p>
+
+    </div>
+
+
+    <!-- CHAT -->
+
+    <div
+        class="chat"
+        id="chat"
+    >
+
+        <div class="message bot">
+
+            <b>🤖 CodeBot</b>
+
+            <br><br>
+
+            ¡Hola! Pídeme el código que necesitas.
+
+            <br><br>
+
+            Por ejemplo:
+
+            <br><br>
+
+            • "Hazme una página de cafetería"
+            <br>
+            • "Hazme una calculadora"
+            <br>
+            • "Hazme un formulario"
+            <br>
+            • "Hazme un catálogo"
+            <br>
+            • "Hazme un dashboard"
+
+        </div>
+
+    </div>
+
+
+    <!-- EJEMPLOS -->
+
+    <div class="examples">
+
+        <button
+            onclick="ejemplo('Hazme una página web de una cafetería')"
+        >
+            ☕ Cafetería
+        </button>
+
+        <button
+            onclick="ejemplo('Hazme una calculadora')"
+        >
+            🧮 Calculadora
+        </button>
+
+        <button
+            onclick="ejemplo('Hazme un formulario de registro')"
+        >
+            📝 Formulario
+        </button>
+
+        <button
+            onclick="ejemplo('Hazme un catálogo de productos')"
+        >
+            🛍️ Catálogo
+        </button>
+
+        <button
+            onclick="ejemplo('Hazme un dashboard')"
+        >
+            📊 Dashboard
+        </button>
+
+    </div>
+
+
+    <!-- INPUT -->
+
+    <div class="input-area">
+
+        <input
+            type="text"
+            id="input"
+            class="input"
+            placeholder="¿Qué código quieres crear?"
+        >
+
+        <button
+            class="send"
+            onclick="enviar()"
+        >
+            Generar
+        </button>
+
+    </div>
+
+
+</div>
+
+
+<script>
+
+/* =========================
+   VARIABLES
+========================= */
+
+const input =
+    document.getElementById("input");
+
+const chat =
+    document.getElementById("chat");
+
+
+/* =========================
+   ENTER
+========================= */
+
+input.addEventListener(
+    "keydown",
+    function(event){
+
+        if(event.key === "Enter"){
+
+            enviar();
+
+        }
+
+    }
+);
+
+
+/* =========================
+   EJEMPLO
+========================= */
+
+function ejemplo(texto){
+
+    input.value = texto;
+
+    enviar();
+
+}
+
+
+/* =========================
+   ENVIAR
+========================= */
+
+function enviar(){
+
+    const texto =
+        input.value.trim();
+
+
+    if(texto === ""){
+
+        return;
+
+    }
+
+
+    /* MENSAJE DEL USUARIO */
+
+    agregarMensaje(
+        texto,
+        "user"
+    );
+
+
+    input.value = "";
+
+
+    /* GENERAR */
+
+    setTimeout(function(){
+
+        generarCodigo(texto);
+
+    },500);
+
+}
+
+
+/* =========================
+   MENSAJE NORMAL
+========================= */
+
+function agregarMensaje(texto,tipo){
+
+    const div =
+        document.createElement("div");
+
+    div.className =
+        "message " + tipo;
+
+    div.textContent =
+        texto;
+
+    chat.appendChild(div);
+
+    chat.scrollTop =
+        chat.scrollHeight;
+
+}
+
+
+/* =========================
+   GENERADOR
+========================= */
+
+function generarCodigo(peticion){
+
+    const texto =
+        peticion
+        .toLowerCase();
+
+
+    /* =====================
+       CALCULADORA
+    ===================== */
+
+    if(
+        texto.includes("calculadora")
+    ){
+
+        mostrarCodigo(
+
+            "🧮 Calculadora",
+
+`<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+<meta charset="UTF-8">
+
+<title>Calculadora</title>
+
+<style>
+
+body{
+    font-family:Arial;
+    background:#f4f6fa;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    min-height:100vh;
+}
+
+.calculadora{
+    background:white;
+    padding:25px;
+    border-radius:15px;
+    box-shadow:0 5px 20px #ccc;
+}
+
+input{
+    width:220px;
+    padding:12px;
+    font-size:20px;
+    margin-bottom:10px;
+}
+
+button{
+    width:50px;
+    height:50px;
+    margin:3px;
+    cursor:pointer;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="calculadora">
+
+<input
+    type="text"
+    id="pantalla"
+    readonly
+>
+
+<br>
+
+<button onclick="agregar('7')">7</button>
+<button onclick="agregar('8')">8</button>
+<button onclick="agregar('9')">9</button>
+<button onclick="agregar('/')">÷</button>
+
+<br>
+
+<button onclick="agregar('4')">4</button>
+<button onclick="agregar('5')">5</button>
+<button onclick="agregar('6')">6</button>
+<button onclick="agregar('*')">×</button>
+
+<br>
+
+<button onclick="agregar('1')">1</button>
+<button onclick="agregar('2')">2</button>
+<button onclick="agregar('3')">3</button>
+<button onclick="agregar('-')">−</button>
+
+<br>
+
+<button onclick="agregar('0')">0</button>
+<button onclick="calcular()">=</button>
+<button onclick="limpiar()">C</button>
+<button onclick="agregar('+')">+</button>
+
+</div>
+
+<script>
+
+function agregar(valor){
+
+    document.getElementById(
+        "pantalla"
+    ).value += valor;
+
+}
+
+function limpiar(){
+
+    document.getElementById(
+        "pantalla"
+    ).value = "";
+
+}
+
+function calcular(){
+
+    const pantalla =
+        document.getElementById(
+            "pantalla"
+        );
+
+    try{
+
+        pantalla.value =
+            Function(
+                "return " +
+                pantalla.value
+            )();
+
+    }catch{
+
+        pantalla.value =
+            "Error";
+
+    }
+
+}
+
+<\/script>
+
+</body>
+
+</html>`
+
+        );
+
+        return;
+
+    }
+
+
+    /* =====================
+       FORMULARIO
+    ===================== */
+
+    if(
+        texto.includes("formulario") ||
+        texto.includes("registro")
+    ){
+
+        mostrarCodigo(
+
+            "📝 Formulario",
+
+`<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+<meta charset="UTF-8">
+
+<title>Formulario</title>
+
+<style>
+
+body{
+    font-family:Arial;
+    background:#f4f6fa;
+    padding:30px;
+}
+
+.formulario{
+    max-width:450px;
+    margin:auto;
+    background:white;
+    padding:25px;
+    border-radius:15px;
+}
+
+input,
+textarea,
+button{
+    width:100%;
+    padding:12px;
+    margin-top:8px;
+    margin-bottom:15px;
+}
+
+button{
+    background:#2563eb;
+    color:white;
+    border:none;
+    cursor:pointer;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="formulario">
+
+<h2>Registro</h2>
+
+<label>Nombre</label>
+
+<input
+    type="text"
+    placeholder="Nombre"
+>
+
+<label>Correo</label>
+
+<input
+    type="email"
+    placeholder="Correo"
+>
+
+<label>Mensaje</label>
+
+<textarea
+    placeholder="Escribe tu mensaje"
+></textarea>
+
+<button onclick="registrar()">
+    Registrar
+</button>
+
+</div>
+
+<script>
+
+function registrar(){
+
+    alert(
+        "Información registrada"
+    );
+
+}
+
+<\/script>
+
+</body>
+
+</html>`
+
+        );
+
+        return;
+
+    }
+
+
+    /* =====================
+       CATÁLOGO
+    ===================== */
+
+    if(
+        texto.includes("catalogo") ||
+        texto.includes("productos")
+    ){
+
+        mostrarCodigo(
+
+            "🛍️ Catálogo",
+
+`<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+<meta charset="UTF-8">
+
+<title>Catálogo</title>
+
+<style>
+
+body{
+    font-family:Arial;
+    background:#f4f6fa;
+    padding:30px;
+}
+
+h1{
+    text-align:center;
+}
+
+.catalogo{
+    display:grid;
+    grid-template-columns:
+        repeat(auto-fit,minmax(220px,1fr));
+    gap:20px;
+}
+
+.producto{
+    background:white;
+    padding:20px;
+    border-radius:15px;
+    text-align:center;
+    box-shadow:0 3px 10px #ddd;
+}
+
+.producto button{
+    background:#2563eb;
+    color:white;
+    border:none;
+    padding:10px;
+    border-radius:7px;
+    cursor:pointer;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<h1>Mi Catálogo</h1>
+
+<div class="catalogo">
+
+<div class="producto">
+
+<h2>Producto 1</h2>
+
+<p>Descripción del producto.</p>
+
+<h3>₡5.000</h3>
+
+<button onclick="comprar()">
+Comprar
+</button>
+
+</div>
+
+<div class="producto">
+
+<h2>Producto 2</h2>
+
+<p>Descripción del producto.</p>
+
+<h3>₡8.000</h3>
+
+<button onclick="comprar()">
+Comprar
+</button>
+
+</div>
+
+</div>
+
+<script>
+
+function comprar(){
+
+    alert(
+        "Producto seleccionado"
+    );
+
+}
+
+<\/script>
+
+</body>
+
+</html>`
+
+        );
+
+        return;
+
+    }
+
+
+    /* =====================
+       DASHBOARD
+    ===================== */
+
+    if(
+        texto.includes("dashboard") ||
+        texto.includes("panel")
+    ){
+
+        mostrarCodigo(
+
+            "📊 Dashboard",
+
+`<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+<meta charset="UTF-8">
+
+<title>Dashboard</title>
+
+<style>
+
+body{
+    font-family:Arial;
+    background:#f4f6fa;
+    margin:0;
+}
+
+.sidebar{
+    position:fixed;
+    width:220px;
+    height:100vh;
+    background:#111827;
+    color:white;
+    padding:20px;
+}
+
+.main{
+    margin-left:260px;
+    padding:30px;
+}
+
+.cards{
+    display:grid;
+    grid-template-columns:
+        repeat(4,1fr);
+    gap:20px;
+}
+
+.card{
+    background:white;
+    padding:25px;
+    border-radius:15px;
+    box-shadow:0 3px 10px #ddd;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="sidebar">
+
+<h2>Dashboard</h2>
+
+<p>📊 Inicio</p>
+<p>👤 Usuarios</p>
+<p>📦 Productos</p>
+<p>⚙️ Configuración</p>
+
+</div>
+
+<div class="main">
+
+<h1>Panel principal</h1>
+
+<div class="cards">
+
+<div class="card">
+<h3>Usuarios</h3>
+<h2>0</h2>
+</div>
+
+<div class="card">
+<h3>Productos</h3>
+<h2>0</h2>
+</div>
+
+<div class="card">
+<h3>Ventas</h3>
+<h2>₡0</h2>
+</div>
+
+<div class="card">
+<h3>Pedidos</h3>
+<h2>0</h2>
+</div>
+
+</div>
+
+</div>
+
+</body>
+
+</html>`
+
+        );
+
+        return;
+
+    }
+
+
+    /* =====================
+       CAFETERÍA
+    ===================== */
+
+    if(
+        texto.includes("cafeteria") ||
+        texto.includes("cafe")
+    ){
+
+        mostrarCodigo(
+
+            "☕ Página de cafetería",
+
+`<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+<meta charset="UTF-8">
+
+<title>Cafetería</title>
+
+<style>
+
+body{
+    margin:0;
+    font-family:Arial;
+    background:#f8f5f0;
+}
+
+header{
+    background:#6f4e37;
+    color:white;
+    padding:30px;
+    text-align:center;
+}
+
+.menu{
+    max-width:900px;
+    margin:30px auto;
+    display:grid;
+    grid-template-columns:
+        repeat(auto-fit,minmax(220px,1fr));
+    gap:20px;
+}
+
+.item{
+    background:white;
+    padding:20px;
+    border-radius:15px;
+    box-shadow:0 3px 10px #ddd;
+}
+
+button{
+    background:#6f4e37;
+    color:white;
+    border:none;
+    padding:10px;
+    border-radius:7px;
+    cursor:pointer;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<header>
+
+<h1>☕ Mi Cafetería</h1>
+
+<p>El mejor café de la ciudad</p>
+
+</header>
+
+<div class="menu">
+
+<div class="item">
+
+<h2>☕ Café</h2>
+
+<p>Café tradicional.</p>
+
+<h3>₡1.500</h3>
+
+<button onclick="pedir()">
+Pedir
+</button>
+
+</div>
+
+<div class="item">
+
+<h2>🥐 Repostería</h2>
+
+<p>Repostería fresca.</p>
+
+<h3>₡2.000</h3>
+
+<button onclick="pedir()">
+Pedir
+</button>
+
+</div>
+
+</div>
+
+<script>
+
+function pedir(){
+
+    alert(
+        "Producto agregado"
+    );
+
+}
+
+<\/script>
+
+</body>
+
+</html>`
+
+        );
+
+        return;
+
+    }
+
+
+    /* =====================
+       RESPUESTA GENERAL
+    ===================== */
+
+    agregarMensaje(
+        "🤖 Puedo generar código para páginas web, formularios, catálogos, dashboards, calculadoras y más. Dime qué quieres crear."
+        ,
+        "bot"
+    );
+
+}
+
+
+/* =========================
+   MOSTRAR CÓDIGO
+========================= */
+
+function mostrarCodigo(titulo,codigo){
+
+    const div =
+        document.createElement("div");
+
+    div.className =
+        "message bot";
+
+
+    const id =
+        "codigo_" +
+        Date.now();
+
+
+    div.innerHTML = `
+
+        <div class="code-title">
+            ${titulo}
+        </div>
+
+        <p>
+            Aquí tienes el código listo
+            para copiar:
+        </p>
+
+        <div class="code-container">
+
+            <div class="code-header">
+
+                <span>
+                    HTML
+                </span>
+
+                <button
+                    class="copy-button"
+                    onclick="copiarCodigo('${id}')"
+                >
+                    📋 Copiar
+                </button>
+
+            </div>
+
+            <pre id="${id}">${escapeHTML(codigo)}</pre>
+
+        </div>
+
+    `;
+
+
+    chat.appendChild(div);
+
+
+    chat.scrollTop =
+        chat.scrollHeight;
+
+}
+
+
+/* =========================
+   COPIAR CÓDIGO
+========================= */
+
+function copiarCodigo(id){
+
+    const elemento =
+        document.getElementById(id);
+
+    const codigo =
+        elemento.textContent;
+
+
+    navigator.clipboard.writeText(
+        codigo
+    ).then(function(){
+
+        alert(
+            "✅ Código copiado"
+        );
+
+    }).catch(function(){
+
+        alert(
+            "No se pudo copiar automáticamente."
+        );
+
+    });
+
+}
+
+
+/* =========================
+   SEGURIDAD
+========================= */
+
+function escapeHTML(text){
+
+    return String(text)
+
+        .replace(/&/g,"&amp;")
+
+        .replace(/</g,"&lt;")
+
+        .replace(/>/g,"&gt;")
+
+        .replace(/"/g,"&quot;")
+
+        .replace(/'/g,"&#039;");
+
+}
+
+</script>
+
+</body>
+</html>
+<p style="background:black; color:white; text-align:center; padding:20px; font-family:Arial, sans-serif; font-weight:bold; letter-spacing:2px; margin:0;">
+  👨‍💻 Programadores <span style="color:#3b82f6;">Erick Córdoba Esquivel</span>
+</p>
+<div>
+    
+</div>
+</div>
+    
+</div>
+<footer style="background:black; color:white; text-align:center; padding:20px; font-family:Arial;">
+   BIENVENIDO - A NUESTRA PÁGINA WEB
+</footer>
