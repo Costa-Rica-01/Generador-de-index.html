@@ -1,0 +1,1028 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>CodeBot - Generador HTML</title>
+
+<style>
+
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+    font-family:Arial,Helvetica,sans-serif;
+}
+
+body{
+    background:#eef2f7;
+    color:#1f2937;
+}
+
+/* HEADER */
+
+header{
+    background:linear-gradient(135deg,#0d47a1,#1976d2);
+    color:white;
+    padding:25px;
+    text-align:center;
+    box-shadow:0 4px 15px rgba(0,0,0,.15);
+}
+
+header h1{
+    font-size:30px;
+    margin-bottom:8px;
+}
+
+header p{
+    opacity:.9;
+}
+
+/* CONTENEDOR */
+
+.container{
+    max-width:1250px;
+    margin:30px auto;
+    padding:0 20px;
+}
+
+.grid{
+    display:grid;
+    grid-template-columns:380px 1fr;
+    gap:25px;
+}
+
+/* TARJETAS */
+
+.panel{
+    background:white;
+    border-radius:18px;
+    padding:25px;
+    box-shadow:0 5px 20px rgba(0,0,0,.08);
+}
+
+.panel h2{
+    margin-bottom:20px;
+    color:#0d47a1;
+}
+
+/* FORMULARIO */
+
+label{
+    display:block;
+    font-weight:bold;
+    margin:15px 0 7px;
+}
+
+input,
+textarea,
+select{
+    width:100%;
+    padding:13px;
+    border:1px solid #d1d5db;
+    border-radius:10px;
+    font-size:15px;
+    outline:none;
+}
+
+textarea{
+    min-height:100px;
+    resize:vertical;
+}
+
+input:focus,
+textarea:focus,
+select:focus{
+    border-color:#1976d2;
+}
+
+/* COLOR */
+
+.color-box{
+    display:flex;
+    gap:10px;
+    align-items:center;
+}
+
+input[type="color"]{
+    width:60px;
+    height:45px;
+    padding:3px;
+}
+
+/* BOTONES */
+
+button{
+    border:0;
+    border-radius:10px;
+    padding:13px 18px;
+    cursor:pointer;
+    font-weight:bold;
+    font-size:14px;
+    transition:.2s;
+}
+
+button:hover{
+    transform:translateY(-2px);
+}
+
+.btn-generar{
+    width:100%;
+    margin-top:20px;
+    background:#0d47a1;
+    color:white;
+}
+
+.btn-copiar{
+    background:#16a34a;
+    color:white;
+}
+
+.btn-descargar{
+    background:#7c3aed;
+    color:white;
+}
+
+.btn-limpiar{
+    background:#ef4444;
+    color:white;
+}
+
+/* BOTONES DE ACCION */
+
+.actions{
+    display:flex;
+    gap:10px;
+    flex-wrap:wrap;
+    margin-bottom:15px;
+}
+
+/* EDITOR */
+
+#codigo{
+    width:100%;
+    height:450px;
+    background:#111827;
+    color:#e5e7eb;
+    border:0;
+    border-radius:12px;
+    padding:18px;
+    font-family:Consolas,monospace;
+    font-size:14px;
+    line-height:1.5;
+    resize:vertical;
+}
+
+/* PREVIEW */
+
+.preview-title{
+    margin-top:25px;
+    margin-bottom:12px;
+    color:#0d47a1;
+}
+
+iframe{
+    width:100%;
+    height:500px;
+    border:2px solid #d1d5db;
+    border-radius:14px;
+    background:white;
+}
+
+/* AYUDA */
+
+.help{
+    background:#eff6ff;
+    border-left:5px solid #1976d2;
+    padding:15px;
+    margin-top:20px;
+    border-radius:8px;
+    line-height:1.6;
+}
+
+/* RESPONSIVE */
+
+@media(max-width:850px){
+
+    .grid{
+        grid-template-columns:1fr;
+    }
+
+    header h1{
+        font-size:24px;
+    }
+
+}
+
+</style>
+</head>
+
+<body>
+
+<header>
+
+    <h1>💻 CodeBot</h1>
+
+    <p>
+        Generador de páginas web HTML
+    </p>
+
+</header>
+
+
+<div class="container">
+
+<div class="grid">
+
+<!-- PANEL IZQUIERDO -->
+
+<div class="panel">
+
+<h2>⚙️ Crear página</h2>
+
+<label>Tipo de página</label>
+
+<select id="tipo">
+
+<option value="restaurante">🍔 Restaurante</option>
+
+<option value="cafeteria">☕ Cafetería</option>
+
+<option value="barberia">💈 Barbería</option>
+
+<option value="salon">💇 Salón de belleza</option>
+
+<option value="tienda">🛒 Tienda</option>
+
+<option value="portafolio">💼 Portafolio</option>
+
+<option value="empresa">🏢 Empresa</option>
+
+<option value="personalizada">🌐 Personalizada</option>
+
+</select>
+
+
+<label>Nombre de la página</label>
+
+<input
+    type="text"
+    id="nombre"
+    placeholder="Ej: Restaurante La Esquina"
+>
+
+
+<label>Descripción</label>
+
+<textarea
+    id="descripcion"
+    placeholder="Escribe una descripción de tu negocio o página..."
+></textarea>
+
+
+<label>Color principal</label>
+
+<div class="color-box">
+
+<input
+    type="color"
+    id="color"
+    value="#0d47a1"
+>
+
+<span id="colorTexto">#0d47a1</span>
+
+</div>
+
+
+<label>Texto del botón</label>
+
+<input
+    type="text"
+    id="boton"
+    value="Contáctanos"
+>
+
+
+<button
+    class="btn-generar"
+    onclick="generarCodigo()"
+>
+🚀 GENERAR CÓDIGO
+</button>
+
+
+<div class="help">
+
+<strong>💡 ¿Cómo funciona?</strong>
+
+<br><br>
+
+1. Selecciona el tipo de página.
+
+<br>
+
+2. Escribe el nombre.
+
+<br>
+
+3. Agrega una descripción.
+
+<br>
+
+4. Selecciona un color.
+
+<br>
+
+5. Presiona <b>GENERAR CÓDIGO</b>.
+
+<br>
+
+6. Edita el código si quieres.
+
+<br>
+
+7. Copia o descarga tu página.
+
+</div>
+
+</div>
+
+
+<!-- PANEL DERECHO -->
+
+<div class="panel">
+
+<h2>💻 Código HTML</h2>
+
+<div class="actions">
+
+<button
+    class="btn-copiar"
+    onclick="copiarCodigo()"
+>
+📋 Copiar
+</button>
+
+<button
+    class="btn-descargar"
+    onclick="descargarHTML()"
+>
+⬇️ Descargar HTML
+</button>
+
+<button
+    class="btn-limpiar"
+    onclick="limpiar()"
+>
+🗑️ Limpiar
+</button>
+
+</div>
+
+
+<textarea id="codigo"></textarea>
+
+
+<h2 class="preview-title">
+👁️ Vista previa
+</h2>
+
+<iframe id="preview"></iframe>
+
+</div>
+
+</div>
+
+</div>
+
+
+<script>
+
+/* =========================
+   CAMBIO DE COLOR
+========================= */
+
+document.getElementById("color").addEventListener("input",function(){
+
+    document.getElementById("colorTexto").textContent=this.value;
+
+});
+
+
+/* =========================
+   GENERADOR
+========================= */
+
+function generarCodigo(){
+
+    let tipo =
+        document.getElementById("tipo").value;
+
+    let nombre =
+        document.getElementById("nombre").value.trim();
+
+    let descripcion =
+        document.getElementById("descripcion").value.trim();
+
+    let color =
+        document.getElementById("color").value;
+
+    let textoBoton =
+        document.getElementById("boton").value.trim();
+
+
+    if(nombre===""){
+
+        nombre="Mi Página Web";
+
+    }
+
+    if(descripcion===""){
+
+        descripcion=
+        "Bienvenido a nuestra página web. Conoce nuestros servicios y descubre todo lo que tenemos para ofrecerte.";
+
+    }
+
+    if(textoBoton===""){
+
+        textoBoton="Contáctanos";
+
+    }
+
+
+    let tituloSeccion="Nuestros servicios";
+
+    let servicios=[];
+
+
+    switch(tipo){
+
+        case "restaurante":
+
+            tituloSeccion="Nuestro menú";
+
+            servicios=[
+                "🍔 Hamburguesas",
+                "🍕 Pizzas",
+                "🍗 Platos especiales",
+                "🥤 Bebidas"
+            ];
+
+        break;
+
+
+        case "cafeteria":
+
+            tituloSeccion="Nuestro café";
+
+            servicios=[
+                "☕ Café",
+                "🥐 Repostería",
+                "🍰 Postres",
+                "🥪 Comida"
+            ];
+
+        break;
+
+
+        case "barberia":
+
+            tituloSeccion="Nuestros servicios";
+
+            servicios=[
+                "✂️ Corte de cabello",
+                "🧔 Arreglo de barba",
+                "💈 Corte clásico",
+                "🔥 Diseño"
+            ];
+
+        break;
+
+
+        case "salon":
+
+            tituloSeccion="Servicios de belleza";
+
+            servicios=[
+                "💇 Cortes",
+                "💆 Tratamientos",
+                "✨ Keratina",
+                "💅 Manicure"
+            ];
+
+        break;
+
+
+        case "tienda":
+
+            tituloSeccion="Productos";
+
+            servicios=[
+                "👕 Ropa",
+                "👟 Calzado",
+                "🎒 Accesorios",
+                "🛍️ Ofertas"
+            ];
+
+        break;
+
+
+        case "portafolio":
+
+            tituloSeccion="Mis proyectos";
+
+            servicios=[
+                "💻 Desarrollo web",
+                "🎨 Diseño",
+                "📱 Aplicaciones",
+                "🚀 Proyectos"
+            ];
+
+        break;
+
+
+        case "empresa":
+
+            tituloSeccion="Nuestros servicios";
+
+            servicios=[
+                "📊 Consultoría",
+                "💻 Tecnología",
+                "🤝 Atención al cliente",
+                "🚀 Soluciones"
+            ];
+
+        break;
+
+
+        default:
+
+            tituloSeccion="Nuestros servicios";
+
+            servicios=[
+                "⭐ Servicio 1",
+                "⭐ Servicio 2",
+                "⭐ Servicio 3",
+                "⭐ Servicio 4"
+            ];
+
+    }
+
+
+    let tarjetas="";
+
+
+    servicios.forEach(function(servicio){
+
+        tarjetas += `
+
+        <div class="card">
+
+            <div class="icon">
+                ${servicio.split(" ")[0]}
+            </div>
+
+            <h3>
+                ${servicio.substring(servicio.indexOf(" ")+1)}
+            </h3>
+
+            <p>
+                Servicio de excelente calidad para nuestros clientes.
+            </p>
+
+        </div>
+
+        `;
+
+    });
+
+
+    let html = `<!DOCTYPE html>
+
+<html lang="es">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<title>${nombre}</title>
+
+<style>
+
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+    font-family:Arial,sans-serif;
+}
+
+body{
+    background:#f4f6f8;
+    color:#222;
+}
+
+header{
+
+    background:
+    linear-gradient(
+        135deg,
+        ${color},
+        #111
+    );
+
+    color:white;
+
+    padding:80px 20px;
+
+    text-align:center;
+
+}
+
+header h1{
+
+    font-size:45px;
+    margin-bottom:15px;
+
+}
+
+header p{
+
+    max-width:700px;
+    margin:auto;
+    font-size:18px;
+    line-height:1.6;
+
+}
+
+.btn{
+
+    display:inline-block;
+
+    margin-top:25px;
+
+    background:white;
+
+    color:${color};
+
+    padding:14px 25px;
+
+    border-radius:30px;
+
+    text-decoration:none;
+
+    font-weight:bold;
+
+}
+
+section{
+
+    max-width:1100px;
+
+    margin:auto;
+
+    padding:60px 20px;
+
+}
+
+section h2{
+
+    text-align:center;
+
+    margin-bottom:35px;
+
+    color:${color};
+
+    font-size:32px;
+
+}
+
+.cards{
+
+    display:grid;
+
+    grid-template-columns:
+    repeat(auto-fit,minmax(220px,1fr));
+
+    gap:20px;
+
+}
+
+.card{
+
+    background:white;
+
+    padding:30px;
+
+    border-radius:18px;
+
+    text-align:center;
+
+    box-shadow:
+    0 5px 20px
+    rgba(0,0,0,.08);
+
+    transition:.3s;
+
+}
+
+.card:hover{
+
+    transform:
+    translateY(-7px);
+
+}
+
+.icon{
+
+    font-size:45px;
+
+    margin-bottom:15px;
+
+}
+
+.card h3{
+
+    color:${color};
+
+    margin-bottom:10px;
+
+}
+
+.card p{
+
+    color:#666;
+
+    line-height:1.5;
+
+}
+
+.contact{
+
+    background:${color};
+
+    color:white;
+
+    text-align:center;
+
+    border-radius:20px;
+
+}
+
+.contact h2{
+
+    color:white;
+
+}
+
+footer{
+
+    background:#111;
+
+    color:white;
+
+    text-align:center;
+
+    padding:25px;
+
+}
+
+@media(max-width:600px){
+
+    header h1{
+
+        font-size:32px;
+
+    }
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+
+<header>
+
+<h1>${nombre}</h1>
+
+<p>
+${descripcion}
+</p>
+
+<a href="#contacto" class="btn">
+${textoBoton}
+</a>
+
+</header>
+
+
+<section>
+
+<h2>
+${tituloSeccion}
+</h2>
+
+<div class="cards">
+
+${tarjetas}
+
+</div>
+
+</section>
+
+
+<section id="contacto">
+
+<div class="contact">
+
+<h2>
+Contacto
+</h2>
+
+<p>
+Estamos disponibles para atenderte.
+</p>
+
+<a
+href="mailto:contacto@ejemplo.com"
+class="btn"
+>
+Enviar correo
+</a>
+
+</div>
+
+</section>
+
+
+<footer>
+
+<p>
+© ${new Date().getFullYear()} ${nombre}
+</p>
+
+<p>
+Página creada con CodeBot
+</p>
+
+</footer>
+
+
+</body>
+
+</html>`;
+
+
+    document.getElementById("codigo").value=html;
+
+    actualizarPreview();
+
+}
+
+
+/* =========================
+   VISTA PREVIA
+========================= */
+
+function actualizarPreview(){
+
+    let codigo=
+        document.getElementById("codigo").value;
+
+    let iframe=
+        document.getElementById("preview");
+
+    let documento=
+        iframe.contentDocument ||
+        iframe.contentWindow.document;
+
+    documento.open();
+
+    documento.write(codigo);
+
+    documento.close();
+
+}
+
+
+/* =========================
+   ACTUALIZAR AL ESCRIBIR
+========================= */
+
+document
+.getElementById("codigo")
+.addEventListener(
+    "input",
+    actualizarPreview
+);
+
+
+/* =========================
+   COPIAR
+========================= */
+
+async function copiarCodigo(){
+
+    let codigo=
+        document.getElementById("codigo").value;
+
+    if(!codigo){
+
+        alert("Primero genera el código.");
+
+        return;
+
+    }
+
+    try{
+
+        await navigator.clipboard.writeText(codigo);
+
+        alert("✅ Código copiado correctamente.");
+
+    }catch(error){
+
+        document
+        .getElementById("codigo")
+        .select();
+
+        document.execCommand("copy");
+
+        alert("✅ Código copiado.");
+
+    }
+
+}
+
+
+/* =========================
+   DESCARGAR
+========================= */
+
+function descargarHTML(){
+
+    let codigo=
+        document.getElementById("codigo").value;
+
+    if(!codigo){
+
+        alert("Primero genera el código.");
+
+        return;
+
+    }
+
+
+    let blob=
+        new Blob(
+            [codigo],
+            {type:"text/html"}
+        );
+
+
+    let url=
+        URL.createObjectURL(blob);
+
+
+    let enlace=
+        document.createElement("a");
+
+    enlace.href=url;
+
+    enlace.download="mi-pagina.html";
+
+    enlace.click();
+
+    URL.revokeObjectURL(url);
+
+}
+
+
+/* =========================
+   LIMPIAR
+========================= */
+
+function limpiar(){
+
+    document.getElementById("codigo").value="";
+
+    document.getElementById("preview").srcdoc="";
+
+    document.getElementById("nombre").value="";
+
+    document.getElementById("descripcion").value="";
+
+}
+
+</script>
+
+</body>
+</html>
